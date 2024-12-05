@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image" href="images/bot.jpg">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/sty.css">
+    <script src="https://accounts.google.com/gsi/client" async></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to Lumen</h2>
+        <form id="login-form" onsubmit="return login(event)">
+            <input type="text" id="login-username" placeholder="Username" required><br>
+            <input type="password" id="login-password" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+            <p id="error-message" style="color: red; display: none;">Invalid credentials. Please try again.</p>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </form>
+        <div class="google-login-container">
+            <p id="signin">Or sign in with</p>
+            <div id="g_id_onload"
+                data-client_id="843848211635-a80qeh47ll1kjr108q7pg6q6j9gs9jec.apps.googleusercontent.com"
+                data-callback="handleGoogleSignIn"
+                data-auto_prompt="false"
+                data-itp_support="true">
+            </div>
+            <div class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="sign_in_with"
+                data-shape="rectangular"
+                data-logo_alignment="left">
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
