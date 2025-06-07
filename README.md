@@ -1,12 +1,12 @@
    # Lumen Chatbot
 
-      Overview
+
 Lumen Chatbot is an intelligent, AI-powered chatbot application designed to provide seamless real-time interactions with users. It offers features like secure authentication, Google OAuth integration, personalized chatbot responses, and chat history management, making it an efficient and user-friendly platform for meaningful conversations.
 
 # Features
-   Authentication**
-   Credential-based Login**: Users can securely log in using their username and password.
-   Google OAuth Integration**: Allows users to log in with their Google account for quick and secure access.
+   ## 1. **Authentication**
+   Credential-based Login: Users can securely log in using their username and password.
+   Google OAuth Integration: Allows users to log in with their Google account for quick and secure access.
 
 ## 2. **Chat Functionality**
    Real-time, intelligent responses powered by Google’s Generative Language API.
