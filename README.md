@@ -25,27 +25,6 @@ Lumen Chatbot is an intelligent, AI-powered chatbot application designed to prov
 - Visually appealing layout with modern UI/UX principles.
 
 
-## Installation
-
-### Prerequisites
-- A modern web browser (Google Chrome, Firefox, Edge, etc.)
-- Local development environment with a web server (optional)
-
-### Steps
-1. **Clone the Repository**
-   bash
-   git clone https://github.com/your-repository/lumen-chatbot.git
-  
-
-2. **Navigate to the Project Folder**
-   bash
-   cd lumen-chatbot
-  
-
-3. **Run the Application**
-   - Open `index.html` in your preferred browser.
-
-
 ## File Structure
 
 Lumen-Chatbot/
