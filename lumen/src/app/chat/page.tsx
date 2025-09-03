@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-
 interface StaticMessage {
   id: string;
   content: string;
@@ -43,9 +42,8 @@ const mockSessions = [
   { id: "4", title: "Explain Quantum Computing" },
 ];
 
-
 const mockStreamResponse = (content: string) => {
-  const responses = {
+  const responses: Record<string, string> = {
     "Write a professional email about project deadline.":
       "Subject: Important: Upcoming Project X Deadline\n\nHi Team,\n\nJust a friendly reminder that the deadline for Project X is approaching. Please ensure all tasks are on track to be completed by [Date]. Let's continue to collaborate effectively to meet our goal. Thanks for all your hard work!\n\nBest,\n[Your Name]",
     "Help me fix a React rendering bug.":
@@ -58,33 +56,26 @@ const mockStreamResponse = (content: string) => {
       "Hello! I am Lumen, your AI assistant. How can I assist you with your project today?",
   };
   const response = responses[content] || responses.default;
-  let displayedContent = "";
   let index = 0;
+
   return new ReadableStream({
     async pull(controller) {
       if (index < response.length) {
         const char = response[index];
-        displayedContent += char;
-       controller.enqueue(new TextEncoder().encode(char));
+        controller.enqueue(new TextEncoder().encode(char));
         index++;
         await new Promise((resolve) => setTimeout(resolve, 20));
       } else {
-        controller.enqueue({ isComplete: true });
         controller.close();
       }
     },
   });
 };
 
-
 export default function ChatPage() {
   const [messages, setMessages] = useState<StaticMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [streamingMessage, setStreamingMessage] = useState<{
-    content: string;
-    isComplete: boolean;
-    timestamp: string;
-  } | null>(null);
+  // const [ setStreamingMessage] = useState<string | null>(null);
   const [theme, setTheme] = useState("dark");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showScrollToBottom, setShowScrollToBottom] = useState(false);
@@ -117,7 +108,7 @@ export default function ChatPage() {
 
   const startNewChat = () => {
     setMessages([]);
-    setStreamingMessage(null);
+    // setStreamingMessage(null);
     setIsTyping(false);
     setSidebarOpen(false);
   };
@@ -134,43 +125,31 @@ export default function ChatPage() {
     setMessages((prev) => [...prev, userMessage]);
 
     setIsTyping(true);
-    setStreamingMessage({
-      content: "",
-      isComplete: false,
-      timestamp: new Date().toISOString(),
-    });
+    // setStreamingMessage("");
 
     let fullResponse = "";
-
-
     const reader = mockStreamResponse(content).getReader();
     const decoder = new TextDecoder();
+
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
-        setStreamingMessage(null);
-        setIsTyping(false);
-        const aiMessage: StaticMessage = {
-          id: (Date.now() + 1).toString(),
-          content: fullResponse,
-          is_user: false,
-          created_at: new Date().toISOString(),
-        };
-        setMessages((prev) => [...prev, aiMessage]);
         break;
       }
-      const chunk = decoder.decode(value); 
+      const chunk = decoder.decode(value);
       fullResponse += chunk;
-      setStreamingMessage((prev) =>
-        prev
-          ? { ...prev, content: prev.content + chunk }
-          : {
-              content: chunk,
-              isComplete: false,
-              timestamp: new Date().toISOString(),
-            }
-      );
+      // setStreamingMessage((prev) => (prev ?? "") + chunk);
     }
+
+    // setStreamingMessage(null);
+    setIsTyping(false);
+    const aiMessage: StaticMessage = {
+      id: (Date.now() + 1).toString(),
+      content: fullResponse,
+      is_user: false,
+      created_at: new Date().toISOString(),
+    };
+    setMessages((prev) => [...prev, aiMessage]);
   };
 
   const handleStartChat = (message: string) => sendMessage(message);
@@ -184,7 +163,6 @@ export default function ChatPage() {
           ? "bg-gray-950 text-gray-200"
           : "bg-[#F7F9FC] text-gray-800"
       )}>
-
       <div
         className={cn(
           "flex lg:hidden items-center justify-between p-4 fixed top-0 left-0 w-full z-40 transition-colors duration-300",
@@ -240,11 +218,10 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {/* Messages */}
         <div
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto relative">
-          {messages.length === 0 && !streamingMessage ? (
+          {messages.length === 0 && !isTyping ? (
             <WelcomeScreen onStartChat={handleStartChat} theme={theme} />
           ) : (
             <div className="py-6 space-y-4 max-w-4xl mx-auto px-4 lg:px-6">
@@ -271,7 +248,6 @@ export default function ChatPage() {
           )}
         </div>
 
-        {/* Input */}
         <div
           className={cn(
             "border-t p-4 lg:p-6 z-20 transition-colors duration-300",
@@ -297,7 +273,6 @@ export default function ChatPage() {
   );
 }
 
-// --- COMPONENTS ---
 
 function Sidebar({
   sidebarOpen,
@@ -541,12 +516,14 @@ function MessageBubble({
           <div className="prose dark:prose-invert prose-sm">
             <ReactMarkdown
               components={{
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 code: ({ node, ...props }) => (
                   <code
                     className="bg-gray-200 dark:bg-gray-700 rounded-md px-1 py-0.5 text-sm"
                     {...props}
                   />
                 ),
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 pre: ({ node, ...props }) => (
                   <pre
                     className="p-2 my-2 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-x-auto text-sm"
